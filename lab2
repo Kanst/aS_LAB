@@ -1,0 +1,56 @@
+; Template for console application
+         .586
+         .MODEL  flat, stdcall
+         OPTION CASEMAP:NONE
+
+Include kernel32.inc
+Include masm32.inc
+
+IncludeLib kernel32.lib
+IncludeLib masm32.lib
+
+         .CONST
+MsgExit  DB    13,10,"Press Enter to Exit",0AH,0DH,0
+
+         .DATA
+C1 SDWORD 4
+B SDWORD 5
+D SDWORD 6
+Result DB 'Result=    '
+ResStr SDWORD 16 DUP ('   '),0
+
+
+
+         .DATA?
+         A SDWORD ?
+         V SDWORD ?
+   
+            inbuf SDWORD 100 DUP (?)
+
+
+         .CODE
+Start:
+          mov EAX,B 
+          imul B ; 
+          mov V,EAX
+          mov EAX,C1
+          add EAX,1
+          imul D
+          sub V,EAX
+          mov EAX,V 
+          CDQ
+          idiv B
+          mov A,EAX
+          
+        Invoke dwtoa,A,ADDR ResStr
+        Invoke StdOut,ADDR Result
+
+;    Add you statements
+;
+         XOR    EAX,EAX
+         Invoke StdOut,ADDR MsgExit
+         Invoke StdIn,ADDR inbuf,LengthOf inbuf		
+	
+         Invoke ExitProcess,0
+         End    Start
+
